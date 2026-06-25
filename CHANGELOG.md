@@ -6,10 +6,8 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
-## [0.1.0] - 2026-06-24
-
 ### Added
-- Initial public release of a CT image-stack segmentation toolkit.
+- Initial public version of a CT image-stack segmentation toolkit.
 - **Supervised**: `ct_seg.model.UNetSegmentation` (U-Net, GroupNorm, skip connections,
   2.5D-capable) with training (`ct_seg.train`) and inference (`ct_seg.segment --method unet`).
 - **Unsupervised**: multi-Otsu, k-means, and GMM intensity segmentation
