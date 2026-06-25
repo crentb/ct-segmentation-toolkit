@@ -1,0 +1,24 @@
+# ---------------------------------------------------------------------------
+# baseline_config.yaml -- Template configuration for 2.5D Noise2Inverse.
+#
+# Copy this file into your reconstruction directory and fill in the four dataset
+# fields, then pass it to train.sh / denoise_slice.sh / denoise_volume.sh. During
+# training, main.py writes the computed normalization statistics (mean4norm /
+# std4norm) back into the config file you use, so that inference normalizes the
+# data exactly as training did.
+#
+# Author:  Cameron Renteria <crentb23@gmail.com>
+# License: Apache-2.0 (see LICENSE)
+# ---------------------------------------------------------------------------
+
+dataset:
+  directory_to_reconstructions: # need to specify   # absolute path to the folder holding the recon subfolders
+  sub_recon_name0: # need to specify                # subfolder name of the first sub-reconstruction  (e.g. recon_even)
+  sub_recon_name1: # need to specify                # subfolder name of the second sub-reconstruction (e.g. recon_odd)
+  full_recon_name: # need to specify                # subfolder name of the full reconstruction (used for inference)
+train:
+  psz: 256      # training patch size in pixels (square psz x psz crops)
+  mbsz: 32      # mini-batch size for training
+  lr: 0.001     # Adam learning rate
+  warmup: 1000  # model updates before the best-metric trackers are reset (see main.py)
+  maxep: 2000   # maximum number of training epochs

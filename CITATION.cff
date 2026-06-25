@@ -1,0 +1,43 @@
+# Citation metadata (Citation File Format 1.2.0).
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below, and the related preprint."
+title: "ct-segmentation-toolkit"
+abstract: "Supervised (U-Net), unsupervised (Otsu/k-means/GMM), and label-free spectral-spatial (SOM) segmentation of scientific image stacks, with a self-supervised denoising interface."
+type: software
+authors:
+  - family-names: "Renteria"
+    given-names: "Cameron B."
+    email: "crentb@uw.edu"
+    affiliation: "University of Washington"
+version: "0.1.0"
+date-released: "2026-06-24"
+license: "Apache-2.0"
+repository-code: "https://github.com/crentb/ct-segmentation-toolkit"
+keywords:
+  - "image segmentation"
+  - "computed tomography"
+  - "U-Net"
+  - "self-organizing map"
+  - "unsupervised learning"
+  - "feature extraction"
+  - "hyperspectral"
+preferred-citation:
+  type: article
+  title: "Deep learning segmentation of enamel nanoscale architecture from synchrotron computed tomography for bioinspired material design"
+  status: "in-preparation"
+  year: 2026
+  journal: "Acta Biomaterialia"
+  notes: "Under review; preprint at https://ssrn.com/abstract=6805001"
+  authors:
+    - family-names: "Renteria"
+      given-names: "Cameron B."
+    - family-names: "Grimm"
+      given-names: "J. R."
+    - family-names: "Yunker"
+      given-names: "A."
+    - family-names: "Marsico"
+      given-names: "C."
+    - family-names: "Nikitin"
+      given-names: "V."
+    - family-names: "Arola"
+      given-names: "D. D."

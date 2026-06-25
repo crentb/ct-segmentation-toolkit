@@ -1,0 +1,84 @@
+# Packaging + tooling for ct-segmentation-toolkit (PEP 621).
+# Pip-installable ("pip install -e .[dev]"); deps + test markers + lint/format
+# config live here so the same config drives local dev and CI.
+[build-system]
+requires      = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name            = "ct-segmentation-toolkit"
+version         = "0.1.0"
+description     = "Supervised (U-Net), unsupervised (Otsu/k-means/GMM), and label-free spectral-spatial (SOM) segmentation of scientific image stacks."
+readme          = "README.md"
+requires-python = ">=3.10"
+license         = { text = "Apache-2.0" }
+authors         = [{ name = "Cameron B. Renteria", email = "crentb@uw.edu" }]
+keywords = [
+    "image segmentation", "computed tomography", "U-Net", "self-organizing map",
+    "unsupervised", "feature extraction", "hyperspectral", "scientific imaging",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+
+# Core runtime deps (all that the default test suite + CI need).
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "scikit-learn>=1.3",
+    "scikit-image>=0.21",
+    "tifffile>=2023.1",
+    "minisom>=2.3",
+    "tqdm>=4.65",
+    "Pillow>=9.0",
+    "matplotlib>=3.7",
+    "torch>=2.0",
+]
+
+[project.optional-dependencies]
+# Interactive labeling/viewing stack (napari/pyvista); not needed for CI.
+viz = ["napari[all]>=0.4", "pyvista>=0.43"]
+mlops = ["mlflow>=2.0"]
+denoise = ["albumentations>=1.3", "PyYAML>=6.0"]
+dev = ["pytest>=8.0", "pytest-cov>=4.1", "ruff==0.14.10", "black==25.11.0", "mypy==1.17.1", "pre-commit>=3.7"]
+
+[project.urls]
+Homepage = "https://github.com/crentb/ct-segmentation-toolkit"
+Issues   = "https://github.com/crentb/ct-segmentation-toolkit/issues"
+
+[tool.setuptools.packages.find]
+where   = ["."]
+include = ["ct_seg*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: longer-running tests (e.g., real SOM training); skipped in default CI",
+]
+
+[tool.ruff]
+line-length    = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]      # pycodestyle errors, pyflakes, isort
+ignore = ["E501", "E402", "F841"]   # long lines (black), import-after-code (CLIs), unused locals
+
+[tool.black]
+line-length    = 100
+target-version = ["py310", "py311", "py312"]
+
+[tool.mypy]
+python_version         = "3.10"
+ignore_missing_imports = true   # third-party libs (minisom, tifffile, napari, ...) ship no stubs
+
+[tool.coverage.run]
+source = ["ct_seg"]
