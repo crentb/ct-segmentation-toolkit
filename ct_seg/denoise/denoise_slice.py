@@ -111,7 +111,10 @@ def main(args):
         + "/"
         + "best_edge_model.pth"
     )
-    checkpoint = torch.load(path_to_mdl, map_location=torch.device("cpu"))
+    # weights_only=True: restrict deserialization to tensors/containers.
+    # torch.load unpickles arbitrary Python by default, so a malicious
+    # checkpoint file would execute code on load (CWE-502 / bandit B614).
+    checkpoint = torch.load(path_to_mdl, map_location=torch.device("cpu"), weights_only=True)
     model = unet_ns_gn(ich=5, start_filter_size=16, channels_per_group=8)
     model.load_state_dict(checkpoint["model_state_dict"])
     model.to(dev)

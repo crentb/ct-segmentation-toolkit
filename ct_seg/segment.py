@@ -235,7 +235,10 @@ def segment_unet(stack, model_path, num_classes, device="cuda"):
 
     # Load model
     model = UNetSegmentation(in_channels=1, num_classes=num_classes, base_filters=32)
-    checkpoint = torch.load(model_path, map_location="cpu")
+    # weights_only=True: restrict deserialization to tensors/containers.
+    # torch.load unpickles arbitrary Python by default, so a malicious
+    # checkpoint file would execute code on load (CWE-502 / bandit B614).
+    checkpoint = torch.load(model_path, map_location="cpu", weights_only=True)
     if "model_state_dict" in checkpoint:
         model.load_state_dict(checkpoint["model_state_dict"])
     else:
