@@ -6,7 +6,7 @@ FROM python:3.11-slim
 WORKDIR /app
 COPY . /app
 
-RUN python -m pip install --upgrade pip \
+RUN python -m pip install --upgrade pip setuptools wheel "jaraco.context>=6.1.0" \
  && python -m pip install --no-cache-dir -e ".[dev]"
 
 # Default: run the fast, pure-Python test suite.
