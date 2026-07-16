@@ -6,6 +6,39 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-16
+
+### Added
+- **Continuous delivery** (`.github/workflows/release.yml`): pushing a `v*` tag re-runs the
+  full CI gate on the tagged commit, then publishes the sdist + wheel to PyPI via Trusted
+  Publishing (OIDC — no stored API token) and a signed container image to GHCR carrying a
+  SLSA build-provenance attestation. `ci.yml` is now `workflow_call`-able so the release
+  re-uses the exact same gates instead of a copy that could drift.
+- **DevSecOps stages in CI**, all gating: full-history secret detection (gitleaks), SAST
+  (bandit, medium+), dependency-CVE audit (pip-audit), and container vulnerability scanning
+  (trivy, CRITICAL/HIGH). The image additionally ships an SPDX SBOM (syft) signed keylessly
+  with cosign via GitHub OIDC.
+
+### Changed
+- `ct_seg.som_bands`: vectorized the per-pixel best-matching-unit mapping — ~1.7× faster on
+  a 512×512 slice.
+- Torch exports are lazy-loaded, so the classical (non-deep-learning) API no longer imports
+  torch.
+
+### Security
+- `torch.load` is now pinned to `weights_only=True` at all three call sites
+  (`denoise/denoise_slice.py`, `denoise/denoise_volume.py`, `segment.py`). By default
+  `torch.load` unpickles arbitrary Python, so a malicious checkpoint could execute code;
+  the weakness (CWE-502) was surfaced by the new bandit gate.
+- Patched the 3 fixable HIGH-severity CVEs that trivy found in the container image.
+
+### Fixed
+- Corrected the trivy-action pin (`0.24.0`, which does not exist → `v0.36.0`), and scoped
+  the trivy gate to *fixable* CRITICAL/HIGH so an unpatchable upstream CVE cannot
+  permanently block releases.
+
+## [0.1.0] - 2026-07-03
+
 ### Added
 - Initial public version of a CT image-stack segmentation toolkit.
 - **Supervised**: `ct_seg.model.UNetSegmentation` (U-Net, GroupNorm, skip connections,
