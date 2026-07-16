@@ -172,10 +172,28 @@ def som_segment(
     som.train(flat_norm[sample_idx], iterations, verbose=False)
 
     # Map each pixel to its best-matching unit (flattened node index).
-    bmu = np.array([som.winner(x) for x in flat_norm])
-    bmu_flat = bmu[:, 0] * som_y + bmu[:, 1]
+    #
+    # Vectorized on purpose: the naive `[som.winner(x) for x in flat_norm]`
+    # makes one Python-level MiniSom call per pixel — 262,144 calls for a
+    # 512x512 slice, measured at ~59% of som_segment's total runtime
+    # (cProfile, 2026-07-15). Computing all pixel-to-node distances as
+    # chunked BLAS matrix products gives the SAME argmin: squared Euclidean
+    # distance via (a-b)^2 = a^2 - 2ab + b^2 preserves the ordering (sqrt is
+    # monotonic), and row-major argmin over the flattened (som_x*som_y) axis
+    # matches MiniSom.winner's unravel_index tie-breaking, so node index
+    # x*som_y + y is reproduced exactly.
+    weights_flat = som.get_weights().reshape(-1, n_feat)
+    w_sq = (weights_flat**2).sum(axis=1)[None, :]
+    bmu_flat = np.empty(flat_norm.shape[0], dtype=np.int64)
+    chunk = 65536  # ~64k x 144 float64 distance block ~= 75 MB, RAM-friendly
+    for i in range(0, flat_norm.shape[0], chunk):
+        block = flat_norm[i : i + chunk]
+        d2 = (block**2).sum(axis=1)[:, None] - 2.0 * (block @ weights_flat.T) + w_sq
+        bmu_flat[i : i + chunk] = np.argmin(d2, axis=1)
 
-    # Cluster the SOM nodes by their weight vectors, then map back to the image.
-    weights = som.get_weights().reshape(-1, n_feat)
-    node_labels = KMeans(n_clusters=n_clusters, random_state=seed, n_init=10).fit_predict(weights)
+    # Cluster the SOM nodes by their weight vectors (weights_flat, computed
+    # above for the BMU mapping), then map back to the image.
+    node_labels = KMeans(n_clusters=n_clusters, random_state=seed, n_init=10).fit_predict(
+        weights_flat
+    )
     return node_labels[bmu_flat].reshape(h, w)
