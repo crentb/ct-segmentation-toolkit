@@ -48,7 +48,7 @@ dependencies = [
 viz = ["napari[all]>=0.4", "pyvista>=0.43"]
 mlops = ["mlflow>=2.0"]
 denoise = ["albumentations>=1.3", "PyYAML>=6.0"]
-dev = ["pytest>=8.0", "pytest-cov>=4.1", "ruff==0.14.10", "black==25.11.0", "mypy==1.17.1", "pre-commit>=3.7"]
+dev = ["pytest>=8.0", "pytest-cov>=4.1", "ruff==0.14.10", "black==26.3.1", "mypy==1.17.1", "pre-commit>=3.7"]
 
 [project.urls]
 Homepage = "https://github.com/crentb/ct-segmentation-toolkit"

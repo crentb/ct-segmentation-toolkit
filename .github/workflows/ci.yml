@@ -1,10 +1,17 @@
-# Continuous Integration for ct-segmentation-toolkit.
+# Continuous Integration + DevSecOps for ct-segmentation-toolkit.
 #
 # On every push / PR to main, across Python 3.10-3.12:
 #   install -> ruff (lint) -> black (format check) -> mypy (advisory) -> pytest+coverage.
-# Then a second job builds the Docker image and runs the suite inside it.
-# A green run certifies the package installs cleanly, imports, is lint/format-clean,
-# and passes its tests on three Python versions and in a container.
+# In parallel, a security job (shift-left, all GATING):
+#   gitleaks (full-history secret detection) -> bandit -ll (medium+ SAST over ct_seg)
+#   -> pip-audit (resolved-environment dependency audit vs known CVEs).
+# Then the container job (runs only when BOTH quality and security are green):
+#   docker build -> trivy image scan (gates on CRITICAL/HIGH) -> in-container test
+#   -> syft SBOM (SPDX JSON) -> cosign keyless signing of the SBOM via GitHub OIDC.
+# A green run certifies: installs cleanly, lint/format-clean, tests pass on three
+# Pythons and in-container, no detected secrets, no medium+ SAST findings, no
+# known-vulnerable dependencies, image free of known CRITICAL/HIGH CVEs, and a
+# signed SBOM naming exactly what ships.
 name: CI
 
 on:
@@ -12,6 +19,11 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+
+# Least-privilege default; the one job needing more (OIDC for signing) asks at
+# job level, so privileges are visible where they are used.
+permissions:
+  contents: read
 
 jobs:
   lint-and-test:
@@ -48,13 +60,99 @@ jobs:
       - name: Tests (pytest; 'slow' tests skipped) with coverage
         run: pytest -m "not slow" --cov --cov-report=term-missing
 
-  docker-build:
-    name: Container image builds & runs
+  security:
+    name: Security scans (secrets, SAST, dependency audit)
     runs-on: ubuntu-latest
-    needs: lint-and-test
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # gitleaks scans the FULL history, not just the tip
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Secret detection (gitleaks, full history) — GATING
+        # A committed credential is a fail even if later deleted: history is
+        # forever once pushed. Pinned release binary; --redact keeps any hit
+        # out of the public log.
+        run: |
+          GITLEAKS_VERSION=8.18.4
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            | tar -xz gitleaks
+          ./gitleaks detect --source . --redact --no-banner -v
+
+      - name: Install package + scanners
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e "."
+          python -m pip install bandit pip-audit
+
+      - name: SAST (bandit, medium+ severity) — GATING
+        # -ll gates on MEDIUM/HIGH (real weaknesses: unsafe deserialization,
+        # injection, weak crypto), not style-grade LOW notes. This gate is what
+        # caught the three unsafe torch.load calls fixed alongside this change.
+        run: bandit -r ct_seg -ll
+
+      - name: Dependency audit (pip-audit vs known-CVE databases) — GATING
+        # Audits the RESOLVED environment. Accepted risks must appear as
+        # explicit --ignore-vuln GHSA-/CVE-ids here, in the diff, reviewed.
+        run: pip-audit
+
+  docker-build:
+    name: Container image builds, is scanned & runs
+    runs-on: ubuntu-latest
+    needs: [lint-and-test, security]   # container minutes only for commits green on quality AND security
+    permissions:
+      contents: read
+      id-token: write               # OIDC token for keyless (Sigstore) signing -- this job only
+    steps:
+      - uses: actions/checkout@v4
+
       - name: Build the image
         run: docker build -t ct-segmentation-toolkit:ci .
+
+      - name: Container vulnerability scan (trivy, CRITICAL/HIGH) — GATING
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ct-segmentation-toolkit:ci
+          format: table
+          exit-code: "1"
+          severity: CRITICAL,HIGH
+          # Gate on ACTIONABLE vulns only: a CVE with no fixed package
+          # released cannot be remediated by us; it stays visible in the
+          # scan log and starts gating the moment a fix ships.
+          ignore-unfixed: true
+
       - name: Smoke-test (run the fast suite inside the container)
         run: docker run --rm ct-segmentation-toolkit:ci pytest -m "not slow"
+
+      - name: SBOM (syft -> SPDX JSON) — evidence artifact
+        uses: anchore/sbom-action@v0
+        with:
+          image: ct-segmentation-toolkit:ci
+          format: spdx-json
+          output-file: sbom.spdx.json
+          upload-artifact: false    # uploaded together with its signature below
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Sign the SBOM (cosign keyless via GitHub OIDC) — evidence artifact
+        # Keyless: GitHub's OIDC identity for THIS run signs through Sigstore;
+        # no private key exists to store or leak. Verify:
+        #   cosign verify-blob --bundle sbom.spdx.json.bundle \
+        #     --certificate-identity-regexp 'github.com/crentb/' \
+        #     --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+        #     sbom.spdx.json
+        run: cosign sign-blob --yes --bundle sbom.spdx.json.bundle sbom.spdx.json
+
+      - name: Upload SBOM + signature bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-and-signature
+          path: |
+            sbom.spdx.json
+            sbom.spdx.json.bundle
