@@ -1,7 +1,7 @@
 # Minimal container that installs the package (core + dev tools) and can run the
 # fast test suite. CPU-only torch wheel is pulled from PyPI. CI builds this image
 # and runs `pytest -m "not slow"` inside it as a clean-environment smoke test.
-FROM python:3.11-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 COPY . /app
