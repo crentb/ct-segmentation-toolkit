@@ -18,7 +18,10 @@ Notes: timings are wall-clock averages with warmup; CUDA timings include `torch.
 
 `som_segment` (the label-free SOM spectral–spatial segmenter) profiled
 end-to-end with cProfile on a fixed-seed 512×512 synthetic texture slice;
-flame graphs rendered with flameprof. Apple-Silicon macOS, Python 3.13.
+flame graphs rendered from the cProfile data via flameprof's
+collapsed-stack export and flamegraph.pl (classic bottom-up layout; the
+SVGs scale to fit the browser window with click-to-zoom intact).
+Apple-Silicon macOS, Python 3.13.
 
 | | Baseline | After |
 |---|---|---|
@@ -43,3 +46,7 @@ zoom):
 
 - [`profiling/flame_som_baseline.svg`](profiling/flame_som_baseline.svg)
 - [`profiling/flame_som_after.svg`](profiling/flame_som_after.svg)
+
+The matching `*.collapsed.txt` files alongside them import directly into
+[speedscope](https://www.speedscope.app/) for interactive exploration
+(fully client-side; nothing is uploaded).
