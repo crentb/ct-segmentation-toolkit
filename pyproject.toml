@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name            = "ct-segmentation-toolkit"
-version         = "0.1.0"
+version         = "0.2.0"
 description     = "Supervised (U-Net), unsupervised (Otsu/k-means/GMM), and label-free spectral-spatial (SOM) segmentation of scientific image stacks."
 readme          = "README.md"
 requires-python = ">=3.10"
