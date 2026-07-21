@@ -4,6 +4,10 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%E2%80%933.12-blue.svg)](pyproject.toml)
 
+![ct-segmentation-toolkit: from an image stack to per-pixel labels, across the full supervision spectrum](docs/figures/ct_segmentation_pipeline.png)
+
+Full schematic as a PDF: [docs/ct_segmentation_pipeline.pdf](docs/ct_segmentation_pipeline.pdf)
+
 Segmentation of scientific image stacks (e.g., synchrotron CT) across the full
 supervision spectrum, in one installable, tested package:
 
