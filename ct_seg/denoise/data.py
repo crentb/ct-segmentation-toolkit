@@ -14,7 +14,8 @@ inference pipelines:
     * InferenceBatchSizeOptimizer - binary-search the largest batch size that fits
                                     in GPU memory to avoid out-of-memory errors.
 
-Author:  Cameron Renteria <crentb23@gmail.com>
+Authors: Austin Yunker (Argonne National Laboratory),
+         Cameron B. Renteria <crentb23@gmail.com>
 License: Apache-2.0 (see LICENSE)
 """
 

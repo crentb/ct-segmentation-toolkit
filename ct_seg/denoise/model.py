@@ -15,7 +15,8 @@ setup) and outputs a single denoised slice. Helper modules:
     unet_up            - nearest-neighbour 2x upsampling
     unet_ns_gn         - the full encoder/bottleneck/decoder network
 
-Author:  Cameron Renteria <crentb23@gmail.com>
+Authors: Austin Yunker (Argonne National Laboratory),
+         Cameron B. Renteria <crentb23@gmail.com>
 License: Apache-2.0 (see LICENSE)
 """
 

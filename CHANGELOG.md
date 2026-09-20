@@ -48,8 +48,9 @@ All notable changes to this project are documented in this file. The format is b
 - **Label-free spectral-spatial**: `ct_seg.som_bands` (`extract_features` + `som_segment`)
   — multi-scale density, structure-tensor orientation/coherence, a Gabor filter bank, and
   local variance, clustered via a Self-Organizing Map; transfers to hyperspectral data.
-- **Self-supervised denoising**: `ct_seg.denoise`, the author's own 2.5D Noise2Inverse
-  implementation (no-skip U-Net, Laplacian Contrast Loss, edge-aware selection, auto
+- **Self-supervised denoising**: `ct_seg.denoise`, a 2.5D Noise2Inverse implementation
+  developed together by Austin Yunker (Argonne National Laboratory) and Cameron B.
+  Renteria (no-skip U-Net, Laplacian Contrast Loss, edge-aware selection, auto
   batch-sizing), with explicit upstream credit to the N2I paper; optional `[denoise]` extra
   (albumentations, PyYAML) for training.
 - Interactive `ct_seg.labeling` (napari) and `ct_seg.viewer` (napari/pyvista) under the

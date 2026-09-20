@@ -27,7 +27,8 @@ Usage:
     python main.py -gpus=0 -config=/path/to/config.yaml
     (normally launched via train.sh)
 
-Author:  Cameron Renteria <crentb23@gmail.com>
+Authors: Austin Yunker (Argonne National Laboratory),
+         Cameron B. Renteria <crentb23@gmail.com>
 License: Apache-2.0 (see LICENSE)
 """
 

@@ -19,7 +19,8 @@ Usage:
     python denoise_slice.py -gpus=0 -config=/path/to/config.yaml -slice_number=500
     (normally launched via denoise_slice.sh)
 
-Author:  Cameron Renteria <crentb23@gmail.com>
+Authors: Austin Yunker (Argonne National Laboratory),
+         Cameron B. Renteria <crentb23@gmail.com>
 License: Apache-2.0 (see LICENSE)
 """
 

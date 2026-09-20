@@ -8,7 +8,8 @@ flat images (low Laplacian-histogram entropy) it instead rewards smoothness. A
 higher score means sharper, better-resolved edges, and main.py keeps the
 checkpoint with the highest score (best_edge_model.pth).
 
-Author:  Cameron Renteria <crentb23@gmail.com>
+Authors: Austin Yunker (Argonne National Laboratory),
+         Cameron B. Renteria <crentb23@gmail.com>
 License: Apache-2.0 (see LICENSE)
 """
 

@@ -1,7 +1,8 @@
 # Acknowledgments — `ct_seg.denoise`
 
-The denoising subpackage is Cameron Renteria's own implementation of the **Noise2Inverse
-(N2I)** self-supervised tomography-denoising framework. The original method is due to:
+The denoising subpackage was **developed together by Austin Yunker (Argonne National
+Laboratory) and Cameron B. Renteria**. It implements and extends the **Noise2Inverse
+(N2I)** self-supervised tomography-denoising framework, whose original method is due to:
 
 > A. A. Hendriksen, D. M. Pelt, and K. J. Batenburg,
 > "Noise2Inverse: Self-Supervised Deep Convolutional Denoising for Tomography,"
@@ -10,8 +11,7 @@ The denoising subpackage is Cameron Renteria's own implementation of the **Noise
 >
 > Original code: https://github.com/ahendriksen/noise2inverse
 
-This subpackage is **original code** (Copyright 2026 Cameron Renteria, licensed Apache-2.0)
-that implements and extends the N2I framework. Cameron's contributions include:
+Beyond the published N2I framework, this joint implementation adds:
 
 - a **2.5D** input (five adjacent slices in, one denoised slice out),
 - a **Laplacian Contrast Loss (LCL)** that preserves edges while smoothing flat regions,
