@@ -6,6 +6,24 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Changed
+- Continuous integration: GitHub Actions updated to their current major versions (Node 24
+  runtimes), gitleaks 8.30.1, and the test matrix extended to Python 3.10 through 3.14.
+- Container base image `python:3.14-slim`.
+- Development tools ruff 0.16.8, black 26.5.1, and mypy 2.3.1, with the pre-commit hooks
+  pinned to the same versions.
+- README reorganized: status badges (CI, PyPI, Python, DOI, license), installation from
+  PyPI and the GitHub Container Registry, a testing and CI section, and a citation entry.
+- Overview figure redrawn for legibility, with its LaTeX source in `docs/figures/src/`.
+
+### Added
+- `SECURITY.md`: supported versions and private vulnerability reporting through GitHub.
+- `doi` in `CITATION.cff` (Zenodo concept DOI).
+
+### Fixed
+- `ct_seg.__version__` reports 0.2.0, matching the released package.
+- `CITATION.cff` preferred citation updated to the revised manuscript's title and author list.
+
 ## [0.2.0] - 2026-07-16
 
 ### Added
