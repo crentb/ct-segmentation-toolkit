@@ -4,13 +4,13 @@ Segmentation of scientific image stacks across the full supervision spectrum, fr
 
 [![CI](https://github.com/crentb/ct-segmentation-toolkit/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/crentb/ct-segmentation-toolkit/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/ct-segmentation-toolkit)](https://pypi.org/project/ct-segmentation-toolkit/)
-[![Python](https://img.shields.io/badge/python-3.10--3.14-blue)](pyproject.toml)
+[![Python](https://img.shields.io/badge/python-3.10--3.14-blue)](https://github.com/crentb/ct-segmentation-toolkit/blob/main/pyproject.toml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21148567.svg)](https://doi.org/10.5281/zenodo.21148567)
-[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](https://github.com/crentb/ct-segmentation-toolkit/blob/main/LICENSE)
 
-![Pipeline overview: an image stack, optional self-supervised denoising, three segmentation routes chosen by label availability, and per-pixel labels](docs/figures/ct_segmentation_pipeline.png)
+![Pipeline overview: an image stack, optional self-supervised denoising, three segmentation routes chosen by label availability, and per-pixel labels](https://raw.githubusercontent.com/crentb/ct-segmentation-toolkit/main/docs/figures/ct_segmentation_pipeline.png)
 
-The toolkit segments volumetric images such as synchrotron and laboratory micro-computed tomography (micro-CT) stacks. It is organized around one practical question: how many labels exist? The unsupervised and label-free routes need none, and the U-Net needs annotated masks. An optional self-supervised denoiser raises the signal-to-noise ratio before any of them. Vector schematic: [docs/ct_segmentation_pipeline.pdf](docs/ct_segmentation_pipeline.pdf).
+The toolkit segments volumetric images such as synchrotron and laboratory micro-computed tomography (micro-CT) stacks. It is organized around one practical question: how many labels exist? The unsupervised and label-free routes need none, and the U-Net needs annotated masks. An optional self-supervised denoiser raises the signal-to-noise ratio before any of them. Vector schematic: [docs/ct_segmentation_pipeline.pdf](https://github.com/crentb/ct-segmentation-toolkit/blob/main/docs/ct_segmentation_pipeline.pdf).
 
 **Associated preprint:** C. Renteria *et al.*, "Deep learning segmentation of enamel rod architecture from synchrotron computed tomography for bioinspired material design," SSRN (2026), [doi:10.2139/ssrn.6805001](https://doi.org/10.2139/ssrn.6805001).
 
@@ -23,7 +23,7 @@ The toolkit segments volumetric images such as synchrotron and laboratory micro-
 | Supervised | annotated masks | U-Net with training and inference | `UNetSegmentation`, `python -m ct_seg.train` |
 | Denoising (optional) | none | 2.5D Noise2Inverse: a no-skip U-Net trained from one noisy reconstruction, with no clean reference, using a Laplacian Contrast Loss and edge-aware model selection | `ct_seg.denoise` |
 
-The denoising subpackage was developed together by Austin Yunker (Argonne National Laboratory) and Cameron B. Renteria; upstream credit is in [ct_seg/denoise/ACKNOWLEDGMENTS.md](ct_seg/denoise/ACKNOWLEDGMENTS.md).
+The denoising subpackage was developed together by Austin Yunker (Argonne National Laboratory) and Cameron B. Renteria; upstream credit is in [ct_seg/denoise/ACKNOWLEDGMENTS.md](https://github.com/crentb/ct-segmentation-toolkit/blob/main/ct_seg/denoise/ACKNOWLEDGMENTS.md).
 
 ## Installation
 
@@ -93,7 +93,7 @@ python -m ct_seg.train --images ... --masks ... --num_classes 4   # logs to ./ml
 mlflow ui                                                          # browse runs
 ```
 
-A reproducible performance profile (forward and training-step latency, throughput, and peak GPU memory) is in [docs/PERF.md](docs/PERF.md):
+A reproducible performance profile (forward and training-step latency, throughput, and peak GPU memory) is in [docs/PERF.md](https://github.com/crentb/ct-segmentation-toolkit/blob/main/docs/PERF.md):
 
 ```bash
 python scripts/profile_unet.py --device cuda --sizes 256 512
@@ -123,13 +123,13 @@ pytest -m "not slow"    # fast suite (what CI runs)
 pytest                  # everything
 ```
 
-Every push and pull request runs one gate, defined in [ci.yml](.github/workflows/ci.yml):
+Every push and pull request runs one gate, defined in [ci.yml](https://github.com/crentb/ct-segmentation-toolkit/blob/main/.github/workflows/ci.yml):
 
 - **Quality:** ruff, black, mypy (advisory), and pytest with coverage on Python 3.10 to 3.14.
 - **Security (blocking):** gitleaks secret detection over the full history, bandit static analysis at medium severity and above, and pip-audit against known vulnerabilities.
 - **Container:** image build, a trivy scan that blocks on fixable critical and high findings, the test suite run inside the image, and an SPDX software bill of materials signed keylessly with cosign.
 
-The same gate re-runs weekly on `main` ([scheduled-scan.yml](.github/workflows/scheduled-scan.yml)), so a newly published vulnerability surfaces without a code change. A version tag re-runs it on the tagged commit before [release.yml](.github/workflows/release.yml) publishes to PyPI through Trusted Publishing (no stored tokens) and pushes a scanned, cosign-signed image with SLSA build provenance to the GitHub Container Registry. To verify a published image:
+The same gate re-runs weekly on `main` ([scheduled-scan.yml](https://github.com/crentb/ct-segmentation-toolkit/blob/main/.github/workflows/scheduled-scan.yml)), so a newly published vulnerability surfaces without a code change. A version tag re-runs it on the tagged commit before [release.yml](https://github.com/crentb/ct-segmentation-toolkit/blob/main/.github/workflows/release.yml) publishes to PyPI through Trusted Publishing (no stored tokens) and pushes a scanned, cosign-signed image with SLSA build provenance to the GitHub Container Registry. To verify a published image:
 
 ```bash
 cosign verify ghcr.io/crentb/ct-segmentation-toolkit:v0.2.0 \
@@ -138,11 +138,11 @@ cosign verify ghcr.io/crentb/ct-segmentation-toolkit:v0.2.0 \
 gh attestation verify oci://ghcr.io/crentb/ct-segmentation-toolkit:v0.2.0 --owner crentb
 ```
 
-To report a vulnerability, see [SECURITY.md](SECURITY.md).
+To report a vulnerability, see [SECURITY.md](https://github.com/crentb/ct-segmentation-toolkit/blob/main/SECURITY.md).
 
 ## Citation
 
-Please cite the software and the associated preprint. GitHub's "Cite this repository" button reads [CITATION.cff](CITATION.cff).
+Please cite the software and the associated preprint. GitHub's "Cite this repository" button reads [CITATION.cff](https://github.com/crentb/ct-segmentation-toolkit/blob/main/CITATION.cff).
 
 ```bibtex
 @software{renteria_ct_segmentation_toolkit,
@@ -158,8 +158,8 @@ Please cite the software and the associated preprint. GitHub's "Cite this reposi
 
 ## Acknowledgments
 
-`ct_seg.denoise` implements the Noise2Inverse framework of Hendriksen, Pelt, and Batenburg (*IEEE Transactions on Computational Imaging*, 2020; [original code](https://github.com/ahendriksen/noise2inverse)). See [ct_seg/denoise/ACKNOWLEDGMENTS.md](ct_seg/denoise/ACKNOWLEDGMENTS.md).
+`ct_seg.denoise` implements the Noise2Inverse framework of Hendriksen, Pelt, and Batenburg (*IEEE Transactions on Computational Imaging*, 2020; [original code](https://github.com/ahendriksen/noise2inverse)). See [ct_seg/denoise/ACKNOWLEDGMENTS.md](https://github.com/crentb/ct-segmentation-toolkit/blob/main/ct_seg/denoise/ACKNOWLEDGMENTS.md).
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+Apache-2.0. See [LICENSE](https://github.com/crentb/ct-segmentation-toolkit/blob/main/LICENSE) and [NOTICE](https://github.com/crentb/ct-segmentation-toolkit/blob/main/NOTICE).
