@@ -7,7 +7,7 @@ from ct_seg.model import UNetSegmentation, count_parameters
 
 
 def test_version():
-    assert ct_seg.__version__ == "0.2.0"
+    assert ct_seg.__version__ == "0.2.1"
 
 
 def test_unet_forward_shape():

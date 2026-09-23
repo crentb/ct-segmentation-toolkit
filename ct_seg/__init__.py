@@ -34,7 +34,7 @@ from ct_seg.segment import (
 )
 from ct_seg.som_bands import extract_features, som_segment
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 # torch-backed exports, resolved lazily on first access (PEP 562).
 _LAZY_TORCH_EXPORTS = {
