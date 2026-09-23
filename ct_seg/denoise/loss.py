@@ -8,7 +8,8 @@ this ratio pushes the network to keep edges sharp (high Laplacian) while smoothi
 flat regions (low Laplacian), counteracting the over-smoothing that plain L1
 denoising tends to produce.
 
-Author:  Cameron Renteria <crentb23@gmail.com>
+Authors: Austin Yunker (Argonne National Laboratory),
+         Cameron B. Renteria <crentb23@gmail.com>
 License: Apache-2.0 (see LICENSE)
 """
 

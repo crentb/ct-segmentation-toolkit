@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-This product includes `ct_seg.denoise`, an implementation of the Noise2Inverse framework
+This product includes `ct_seg.denoise`, developed together by Austin Yunker (Argonne
+National Laboratory) and Cameron B. Renteria, implementing the Noise2Inverse framework
 (Hendriksen, Pelt & Batenburg, IEEE Transactions on Computational Imaging, 2020;
 https://github.com/ahendriksen/noise2inverse). See ct_seg/denoise/ACKNOWLEDGMENTS.md.

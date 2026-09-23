@@ -6,7 +6,8 @@ reconstruction: natural (human) sorting of filenames, loading a directory of TIF
 into a NumPy volume, globbing a directory for TIFFs, saving a volume back out as
 numbered TIFFs, and loading a stack as a sinogram.
 
-Author:  Cameron Renteria <crentb23@gmail.com>
+Authors: Austin Yunker (Argonne National Laboratory),
+         Cameron B. Renteria <crentb23@gmail.com>
 License: Apache-2.0 (see LICENSE)
 """
 

@@ -20,8 +20,9 @@ supervision spectrum, in one installable, tested package:
   feature engineering transfers directly to **hyperspectral** cubes.
 - **Self-supervised denoising** — a 2.5D **Noise2Inverse** denoiser (`ct_seg.denoise`): a
   no-skip U-Net trained from one noisy reconstruction (no clean reference), with a Laplacian
-  Contrast Loss and edge-aware model selection. The author's own implementation of the N2I
-  framework (upstream credit in [ct_seg/denoise/ACKNOWLEDGMENTS.md](ct_seg/denoise/ACKNOWLEDGMENTS.md)).
+  Contrast Loss and edge-aware model selection. Developed together by Austin Yunker
+  (Argonne National Laboratory) and Cameron B. Renteria; upstream credit in
+  [ct_seg/denoise/ACKNOWLEDGMENTS.md](ct_seg/denoise/ACKNOWLEDGMENTS.md).
 
 ## Install
 
@@ -95,8 +96,9 @@ pytest                    # everything
 ## Status
 
 The supervised, unsupervised, SOM, and **Noise2Inverse denoising** paths are functional and
-tested. The denoiser (`ct_seg.denoise`) is the author's own implementation of the N2I
-framework (upstream credit in `ct_seg/denoise/ACKNOWLEDGMENTS.md`). Related published work on deep-learning
+tested. The denoiser (`ct_seg.denoise`) was developed together by Austin Yunker (Argonne
+National Laboratory) and Cameron B. Renteria (upstream credit in
+`ct_seg/denoise/ACKNOWLEDGMENTS.md`). Related published work on deep-learning
 segmentation and self-supervised denoising of synchrotron CT is available as a preprint:
 https://ssrn.com/abstract=6805001
 

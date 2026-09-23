@@ -21,7 +21,8 @@ Usage:
     python denoise_volume.py -gpus=0 -config=/path/to/config.yaml -start_slice=500 -end_slice=600
     (normally launched via denoise_volume.sh; omit the range to denoise everything)
 
-Author:  Cameron Renteria <crentb23@gmail.com>
+Authors: Austin Yunker (Argonne National Laboratory),
+         Cameron B. Renteria <crentb23@gmail.com>
 License: Apache-2.0 (see LICENSE)
 """
 

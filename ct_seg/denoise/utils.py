@@ -5,7 +5,8 @@ Helpers shared across the project: write an array to a TIFF or 8-bit PNG preview
 (`save2img`), save an RGB preview (`save2img_rgb`), rescale an array to uint8
 (`scale2uint8`), and parse boolean command-line strings (`str2bool`).
 
-Author:  Cameron Renteria <crentb23@gmail.com>
+Authors: Austin Yunker (Argonne National Laboratory),
+         Cameron B. Renteria <crentb23@gmail.com>
 License: Apache-2.0 (see LICENSE)
 """
 

@@ -7,7 +7,8 @@
 # std4norm) back into the config file you use, so that inference normalizes the
 # data exactly as training did.
 #
-# Author:  Cameron Renteria <crentb23@gmail.com>
+# Authors: Austin Yunker (Argonne National Laboratory),
+#          Cameron B. Renteria <crentb23@gmail.com>
 # License: Apache-2.0 (see LICENSE)
 # ---------------------------------------------------------------------------
 
