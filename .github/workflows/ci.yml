@@ -1,6 +1,6 @@
 # Continuous Integration + DevSecOps for ct-segmentation-toolkit.
 #
-# On every push / PR to main, across Python 3.10-3.12:
+# On every push / PR to main, across Python 3.10-3.14:
 #   install -> ruff (lint) -> black (format check) -> mypy (advisory) -> pytest+coverage.
 # In parallel, a security job (shift-left, all GATING):
 #   gitleaks (full-history secret detection) -> bandit -ll (medium+ SAST over ct_seg)
@@ -8,7 +8,7 @@
 # Then the container job (runs only when BOTH quality and security are green):
 #   docker build -> trivy image scan (gates on CRITICAL/HIGH) -> in-container test
 #   -> syft SBOM (SPDX JSON) -> cosign keyless signing of the SBOM via GitHub OIDC.
-# A green run certifies: installs cleanly, lint/format-clean, tests pass on three
+# A green run certifies: installs cleanly, lint/format-clean, tests pass on five
 # Pythons and in-container, no detected secrets, no medium+ SAST findings, no
 # known-vulnerable dependencies, image free of known CRITICAL/HIGH CVEs, and a
 # signed SBOM naming exactly what ships.
@@ -36,12 +36,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -68,12 +68,12 @@ jobs:
     name: Security scans (secrets, SAST, dependency audit)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0          # gitleaks scans the FULL history, not just the tip
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -83,10 +83,10 @@ jobs:
         # forever once pushed. Pinned release binary; --redact keeps any hit
         # out of the public log.
         run: |
-          GITLEAKS_VERSION=8.18.4
+          GITLEAKS_VERSION=8.30.1
           curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
             | tar -xz gitleaks
-          ./gitleaks detect --source . --redact --no-banner -v
+          ./gitleaks git --redact --no-banner -v .
 
       - name: Install package + scanners
         run: |
@@ -113,7 +113,7 @@ jobs:
       contents: read
       id-token: write               # OIDC token for keyless (Sigstore) signing -- this job only
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build the image
         run: docker build -t ct-segmentation-toolkit:ci .
@@ -154,7 +154,7 @@ jobs:
         run: cosign sign-blob --yes --bundle sbom.spdx.json.bundle sbom.spdx.json
 
       - name: Upload SBOM + signature bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sbom-and-signature
           path: |
