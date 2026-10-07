@@ -14,6 +14,10 @@ The toolkit segments volumetric images such as synchrotron and laboratory micro-
 
 **Associated preprint:** C. Renteria *et al.*, "Deep learning segmentation of enamel rod architecture from synchrotron computed tomography for bioinspired material design," SSRN (2026), [doi:10.2139/ssrn.6805001](https://doi.org/10.2139/ssrn.6805001).
 
+![Graphical abstract of the associated study: nano-CT scans of human, lion and wild African dog enamel pass through self-supervised denoising and supervised deep-learning segmentation to the 3D rod-interrod architecture and printable digital models](https://raw.githubusercontent.com/crentb/ct-segmentation-toolkit/main/docs/figures/enamel_nanoct_graphical_abstract.png)
+
+*In the associated study, self-supervised denoising and U-Net segmentation of nano-CT scans of human, lion and wild African dog enamel recover the 3D rod–interrod architecture behind printable digital models (the study's graphical abstract).*
+
 ## Methods
 
 | Route | Labels needed | Method | Entry point |
