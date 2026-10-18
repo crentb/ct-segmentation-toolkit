@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Changed
+- The contact address in `pyproject.toml` and `CITATION.cff` is now crentb23@gmail.com; the
+  University of Washington address is being retired.
+
 ## [0.2.1] - 2026-09-23
 
 ### Changed
